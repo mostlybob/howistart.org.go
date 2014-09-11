@@ -10,10 +10,9 @@ func main() {
 	http.HandleFunc("/hello", hello)
 
 	http.HandleFunc("/weather/", func(w http.ResponseWriter, r *http.Request) {
-		city := strings.SplitN(r.URL.Path, "/", 2)[2]
+		city := strings.SplitN(r.URL.Path, "/", 3)[2]
 
 		data, err := query(city)
-
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -27,12 +26,11 @@ func main() {
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello! (v.next)"))
+	w.Write([]byte("hello!"))
 }
 
 func query(city string) (weatherData, error) {
 	resp, err := http.Get("http://api.openweathermap.org/data/2.5/weather?q=" + city)
-
 	if err != nil {
 		return weatherData{}, err
 	}
